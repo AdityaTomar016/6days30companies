@@ -1,0 +1,36 @@
+class Solution {
+public:
+    string getHint(string secret, string guess) {
+        int count=0;
+
+        map<char,int>mp;
+
+        for(auto i: secret){
+            mp[i]++;
+        }
+
+        for(int i=0;i<guess.size();i++){
+            if(mp[guess[i]]>0){
+                count++;
+                mp[guess[i]]--;
+            }
+        }
+        int bulls=0,cows=0;
+
+        for(int i=0;i<guess.size();i++){
+            if(secret[i] == guess[i]){
+                bulls++;
+            }
+        }
+
+        cows = count-bulls;
+
+        string s="";
+        s += to_string(bulls);
+        s += 'A';
+        s += to_string(cows);
+        s += 'B';
+
+        return s;
+    }
+};
