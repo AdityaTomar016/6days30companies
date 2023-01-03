@@ -1,0 +1,68 @@
+class Solution {
+public:
+vector<int>par;
+vector<int>dis;
+
+void dfs1(int node,int p,int d,vector<int> adj[]){
+    par[node] = p;
+    dis[node] = d;
+
+    for(auto child: adj[node]){
+        
+        if(child == p) continue;
+
+        dfs1(child,node,d+1,adj);
+    }
+}
+
+int dfs2(int node,int p, vector<int>&amount,vector<int>adj[]){
+    int ret = amount[node];
+    int maxi = INT_MIN;
+
+    for(auto child: adj[node]){
+        if(child == p) continue;
+
+        maxi = max(maxi,dfs2(child,node,amount,adj));
+    }
+
+    if(maxi == INT_MIN) return ret;
+    else
+    return maxi+ret;
+}
+    int mostProfitablePath(vector<vector<int>>& edges, int bob, vector<int>& amount) {
+
+        int n = amount.size();
+        par.resize(n);
+        dis.resize(n,0);
+
+        vector<int>adj[n];
+        
+        for(auto it: edges){
+            int u = it[0];
+            int v = it[1];
+            
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+
+        dfs1(0,0,0,adj);
+
+        int curr = bob;
+        int bob_dis = 0;
+
+        while(curr != 0){
+
+            if(dis[curr] > bob_dis){
+                amount[curr] = 0;
+            }
+            else if(dis[curr] == bob_dis){
+                amount[curr] = amount[curr]/2;
+            }
+
+            curr = par[curr];
+            bob_dis++;
+        }
+        
+        return dfs2(0,0,amount,adj);
+    }
+};
