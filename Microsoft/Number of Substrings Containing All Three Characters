@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int numberOfSubstrings(string s) {
+        
+        int n = s.size();
+        int ans=0;
+        int i=0,j=0;
+        vector<int>v(3,0);
+
+        while(i < n){
+            v[s[i]-'a']++;
+
+            while(v[0] && v[1] && v[2]){
+                ans += n - i;
+                v[s[j]-'a']--;
+                j++;
+            }
+
+            i++;
+        }
+        return ans;
+    }
+};
